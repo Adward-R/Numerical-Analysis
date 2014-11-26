@@ -97,7 +97,7 @@ int factorization(int n, double (&a)[MAX_SIZE][MAX_SIZE], double (&L)[MAX_SIZE][
 }
 
 void solve(int n, double (&L)[MAX_SIZE][MAX_SIZE], double (&U)[MAX_SIZE][MAX_SIZE], double x[], double b[]){
-    int y[n];
+    double y[n];
     y[0] = b[0] / L[0][0];
     for (int i=1;i<n;i++){
         y[i] = b[i];
@@ -117,7 +117,8 @@ void solve(int n, double (&L)[MAX_SIZE][MAX_SIZE], double (&U)[MAX_SIZE][MAX_SIZ
 }
 
 int EigenV(int n, double (&a)[MAX_SIZE][MAX_SIZE], double *lambda, double v[], double TOL, int MAXN){
-    int q = *lambda;
+    double q = *lambda;
+    cout<<"q="<<q<<endl;//
     int k=1,p=0;
     double x[n];
     double _a[MAX_SIZE][MAX_SIZE];
@@ -157,6 +158,22 @@ int EigenV(int n, double (&a)[MAX_SIZE][MAX_SIZE], double *lambda, double v[], d
     if (factorization(n,_a,L,U)==1){
         return -1;
     }
+
+    cout<<"~~~~~~~~~~~"<<endl;
+    for (int i=0;i<n;i++){
+        for (int j=0;j<n;j++){
+            cout<<L[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<"~~~"<<endl;
+    for (int i=0;i<n;i++){
+        for (int j=0;j<n;j++){
+            cout<<U[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<"~~~~~~~~~~~"<<endl;
 
     //cout<<lambda<<endl;
     //cout<<(*lambda)<<"________"<<endl;
