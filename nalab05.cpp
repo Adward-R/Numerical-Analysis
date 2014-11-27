@@ -93,6 +93,9 @@ int factorization(int n, double (&a)[MAX_SIZE][MAX_SIZE], double (&L)[MAX_SIZE][
     for (int k=0;k<n-1;k++){
         U[n-1][n-1] -= L[n-1][k] * U[k][n-1];
     }
+    if (U[n-1][n-1]==0){
+        return 1;
+    }
     return 0;
 }
 
