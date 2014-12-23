@@ -91,6 +91,7 @@ int Jacobi( int n, double a[][MAX_SIZE], double b[], double x[], double TOL, int
         XO[i] = x[i];
     }
 
+    k=1;
     while (k<=MAXN){
         dist = 0;
         for (i=0;i<n;i++){
@@ -102,9 +103,10 @@ int Jacobi( int n, double a[][MAX_SIZE], double b[], double x[], double TOL, int
             if (_x[i]>bound || _x[i]<-bound){
                 return -2;
             }
-            dist += (_x[i] - XO[i])*(_x[i] - XO[i]);
+            if (fabs(_x[i]-XO[i])>dist) dist = fabs(_x[i]-XO[i]);
         }
-        if (dist*dist < TOL*TOL){
+        //printf("%lf...\n",dist);
+        if (dist < TOL){
             for (i=0;i<n;i++){
                 x[i] = _x[i];
             }
@@ -140,6 +142,7 @@ int Gauss_Seidel( int n, double a[][MAX_SIZE], double b[], double x[], double TO
         XO[i] = x[i];
     }
 
+    k=1;
     while (k<=MAXN){
         dist = 0;
         for (i=0;i<n;i++){
@@ -154,9 +157,9 @@ int Gauss_Seidel( int n, double a[][MAX_SIZE], double b[], double x[], double TO
             if (_x[i]>bound || _x[i]<-bound){
                 return -2;
             }
-            dist += (_x[i] - XO[i])*(_x[i] - XO[i]);
+            if (fabs(_x[i]-XO[i])>dist) dist = fabs(_x[i]-XO[i]);
         }
-        if (dist*dist < TOL*TOL){
+        if (dist < TOL){
             for (i=0;i<n;i++){
                 x[i] = _x[i];
             }
