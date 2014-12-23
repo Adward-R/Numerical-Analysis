@@ -73,6 +73,8 @@ int Jacobi( int n, double a[][MAX_SIZE], double b[], double x[], double TOL, int
     int k,i,j,unique;
     double XO[n],_x[n];
     double dist;
+    double tmp;
+    int p;
 
     unique = 0;
     for (i=0;i<n;i++){
@@ -86,7 +88,38 @@ int Jacobi( int n, double a[][MAX_SIZE], double b[], double x[], double TOL, int
     if (unique != n){
         return -1;
     }
-
+    //exchange...
+    for (i=0;i<n;i++){
+        p = i;
+        for (j=i+1;j<n;j++){
+            if (fabs(a[j][i])>fabs(a[p][i])) p=j;
+        }
+        if (fabs(a[p][i])>ZERO){
+            if (p!=i){
+                for (j=0;j<n;j++){
+                    tmp = a[i][j];
+                    a[i][j] = a[p][j];
+                    a[p][j] = tmp;
+                }
+                tmp = b[i];
+                b[i] = b[p];
+                b[p] = tmp;
+            }
+        }
+        else {
+            p = i;
+            for (j=i-1;j>=0;j--){
+                if (fabs(a[j][i])>fabs(a[p][j])) p=j;
+            }
+            if (fabs(a[p][i])>ZERO){
+                if (p!=i){
+                    for (j=0;j<n;j++) a[i][j] += a[p][j];
+                    b[i] += b[p];
+                }
+            }
+        }
+    }
+    //...exchange
     for (i=0;i<n;i++){
         XO[i] = x[i];
     }
@@ -96,16 +129,16 @@ int Jacobi( int n, double a[][MAX_SIZE], double b[], double x[], double TOL, int
         dist = 0;
         for (i=0;i<n;i++){
             _x[i] = b[i] + a[i][i] * XO[i];
+            tmp=0;
             for (j=0;j<n;j++){
-                _x[i] -= a[i][j] * XO[j];
+                tmp += a[i][j] * XO[j];
             }
-            _x[i] /= a[i][i];
+            _x[i] = (_x[i] - tmp) / a[i][i];
             if (_x[i]>bound || _x[i]<-bound){
                 return -2;
             }
             if (fabs(_x[i]-XO[i])>dist) dist = fabs(_x[i]-XO[i]);
         }
-        //printf("%lf...\n",dist);
         if (dist < TOL){
             for (i=0;i<n;i++){
                 x[i] = _x[i];
@@ -124,6 +157,8 @@ int Gauss_Seidel( int n, double a[][MAX_SIZE], double b[], double x[], double TO
     int k,i,j,unique;
     double XO[n],_x[n];
     double dist;
+    double tmp;
+    int p;
 
     unique = 0;
     for (i=0;i<n;i++){
@@ -138,6 +173,38 @@ int Gauss_Seidel( int n, double a[][MAX_SIZE], double b[], double x[], double TO
         return -1;
     }
 
+    //exchange...
+    for (i=0;i<n;i++){
+        p = i;
+        for (j=i+1;j<n;j++){
+            if (fabs(a[j][i])>fabs(a[p][i])) p=j;
+        }
+        if (fabs(a[p][i])>ZERO){
+            if (p!=i){
+                for (j=0;j<n;j++){
+                    tmp = a[i][j];
+                    a[i][j] = a[p][j];
+                    a[p][j] = tmp;
+                }
+                tmp = b[i];
+                b[i] = b[p];
+                b[p] = tmp;
+            }
+        }
+        else {
+            p = i;
+            for (j=i-1;j>=0;j--){
+                if (fabs(a[j][i])>fabs(a[p][j])) p=j;
+            }
+            if (fabs(a[p][i])>ZERO){
+                if (p!=i){
+                    for (j=0;j<n;j++) a[i][j] += a[p][j];
+                    b[i] += b[p];
+                }
+            }
+        }
+    }
+    //...exchange
     for (i=0;i<n;i++){
         XO[i] = x[i];
     }
